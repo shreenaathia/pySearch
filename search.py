@@ -1,4 +1,5 @@
 
+from urllib.parse import quote
 import urllib
 import webbrowser
 
@@ -36,7 +37,7 @@ class Search:
         else:
             self.searchQuery = "+".join(self.searchRaw)
         #end of search exceptions
-        self.url = "http://www." + self.engine + "." + self.domain + self.searchString + self.searchQuery
+        self.url = "http://www." + self.engine + "." + self.domain + self.searchString + quote(self.searchQuery.encode('utf8'))
         return self.url
     #end of link building
 
