@@ -14,9 +14,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-Clone this Repo  
-
-In either Command Prompt for Windows or Terminal for OSX and Linux run: `python <pySearch directory>\pySearch.py -s <search query>`
+1. Clone the repository
+1. Navigate inside the repository
+1. Run `pip install -e`
+1. pySearch can be used by using `pySearch -s <search query>`
 
 #### Command Line Arguments 
 - `-s`  takes query to search
