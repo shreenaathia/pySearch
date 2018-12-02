@@ -1,6 +1,10 @@
-
 import urllib
 import webbrowser
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import urllib.request
+import re
+
 
 class Search:
     def __init__(self, searchIn = None, engineIn = "google", domainIn = "ca"):
@@ -37,13 +41,33 @@ class Search:
             self.searchQuery = "+".join(self.searchRaw)
         #end of search exceptions
         self.url = "http://www." + self.engine + "." + self.domain + self.searchString + self.searchQuery
-        return self.url
-    #end of link building
 
-    def openBrowser(self):
-        webbrowser.open_new_tab(self.url)
+        html = self.url; 
+        req = urllib.request.Request(html, headers={'User-Agent': 'Mozilla/5.0'})
+
+        soup = BeautifulSoup(urlopen(req).read(),"html.parser")
+
+        #Regex
+        reg=re.compile(".*&sa=")
+
+        links = []
+
+        #Parsing web urls
+        for item in soup.find_all('h3', attrs={'class' : 'r'}):
+    
+            line = (reg.match(item.a['href'][7:]).group())
+            links.append(line[:-4])
+
+        #printing links scrapped as a list
+        print(links)
+
+        return self.url 
+    # end of webspider
+
+   # def openBrowser(self):
+    #    webbrowser.open_new_tab(self.url)
     #end of openBrowser()
-
+    
     def handleArgs(self, args):
         if args.engine is not None:
             self.setEngine(args.engine[0])
@@ -54,7 +78,7 @@ class Search:
         for search in args.s:
             self.setQuery(search)
             self.buildLink()
-            self.openBrowser()
+         #   self.openBrowser()
     #end of handleArgs
  
 #end of Query
